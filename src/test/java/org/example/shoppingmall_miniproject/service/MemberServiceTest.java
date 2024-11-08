@@ -1,8 +1,7 @@
 package org.example.shoppingmall_miniproject.service;
 
-import org.assertj.core.api.Assertions;
-import org.example.shoppingmall_miniproject.dto.MemberCreateDto;
-import org.example.shoppingmall_miniproject.dto.MemberInquiryDto;
+import org.example.shoppingmall_miniproject.dto.member.MemberCreateDto;
+import org.example.shoppingmall_miniproject.dto.member.MemberInquiryDto;
 import org.example.shoppingmall_miniproject.entity.Member;
 import org.example.shoppingmall_miniproject.entity.MemberStatus;
 import org.example.shoppingmall_miniproject.exception.NotUniqueUserIdException;

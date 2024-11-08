@@ -1,11 +1,10 @@
 package org.example.shoppingmall_miniproject.service;
 
-import org.example.shoppingmall_miniproject.dto.ProductCreateDto;
-import org.example.shoppingmall_miniproject.dto.ProductInquiryDto;
+import org.example.shoppingmall_miniproject.dto.product.ProductCreateDto;
+import org.example.shoppingmall_miniproject.dto.product.ProductInquiryDto;
 import org.example.shoppingmall_miniproject.dto.StockCreateDto;
 import org.example.shoppingmall_miniproject.entity.Warehouse;
 import org.example.shoppingmall_miniproject.exception.NotUniqueStockException;
-import org.example.shoppingmall_miniproject.repository.ProductRepository;
 import org.example.shoppingmall_miniproject.repository.StockRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -42,7 +42,8 @@ public class OrderProduct {
         }
     }
 
-    public static OrderProduct createOrderProduct(Product product, int quantity, int price, Stock stock) {
+    public static OrderProduct createOrderProduct(
+            Product product, int quantity, int price, Stock stock) {
         OrderProduct orderProduct = new OrderProduct(
            null, null, product, quantity, price, OrderProductStatus.ordered
         );

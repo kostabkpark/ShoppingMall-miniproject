@@ -1,4 +1,4 @@
-package org.example.shoppingmall_miniproject.dto;
+package org.example.shoppingmall_miniproject.dto.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -37,7 +37,7 @@ public class Order {
 
     // 편의 메서드는 차후 구현
     // 주문 생성 (회원 + 주문일자 + 상태 + 재고(minus) + 배송 + 주문상품( ) : 주문총수량 + 총금액)
-    public static Order createOrder(Member member, Delivery delivery, OrderProduct... orderProducts) {
+    public static Order createOrder(Member member, Delivery delivery, List<OrderProduct> orderProducts) {
         Order order = new Order(null,member,LocalDateTime.now(),0,0,
                 OrderStatus.ordered,LocalDateTime.now(),delivery,new ArrayList<>());
 

@@ -1,8 +1,8 @@
 package org.example.shoppingmall_miniproject.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.shoppingmall_miniproject.dto.ProductCreateDto;
-import org.example.shoppingmall_miniproject.dto.ProductInquiryDto;
+import org.example.shoppingmall_miniproject.dto.product.ProductCreateDto;
+import org.example.shoppingmall_miniproject.dto.product.ProductInquiryDto;
 import org.example.shoppingmall_miniproject.entity.Product;
 import org.example.shoppingmall_miniproject.entity.ProductStatus;
 import org.example.shoppingmall_miniproject.exception.NotUniqueProductNameException;

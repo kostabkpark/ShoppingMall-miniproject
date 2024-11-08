@@ -1,8 +1,6 @@
 package org.example.shoppingmall_miniproject.service;
 
-import org.assertj.core.api.Assertions;
-import org.example.shoppingmall_miniproject.dto.ProductCreateDto;
-import org.example.shoppingmall_miniproject.entity.Product;
+import org.example.shoppingmall_miniproject.dto.product.ProductCreateDto;
 import org.example.shoppingmall_miniproject.exception.NotUniqueProductNameException;
 import org.example.shoppingmall_miniproject.repository.ProductRepository;
 import org.junit.jupiter.api.Test;

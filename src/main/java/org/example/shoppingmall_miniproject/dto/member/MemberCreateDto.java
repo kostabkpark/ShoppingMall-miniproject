@@ -1,4 +1,4 @@
-package org.example.shoppingmall_miniproject.dto;
+package org.example.shoppingmall_miniproject.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
