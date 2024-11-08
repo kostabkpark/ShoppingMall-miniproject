@@ -42,7 +42,7 @@ public class MemberService {
                     LocalDate.now(), null);
 
             Member save = memberRepository.save(member);
-
+            return MemberInquiryDto.of(save);
         }
         return null;
     }
