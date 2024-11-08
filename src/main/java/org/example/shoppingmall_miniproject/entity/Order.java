@@ -48,7 +48,7 @@ public class Order {
             order.orderProducts.add(orderProduct);
         }
 
-        delivery.setOrder(order);
+        //delivery.setOrder(order);
         return order;
     }
 

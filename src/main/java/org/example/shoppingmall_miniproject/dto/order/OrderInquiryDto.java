@@ -35,4 +35,15 @@ public class OrderInquiryDto {
         dto.setStatusChangeDate(order.getStatusChangeDate());
         return dto;
     }
+
+    @Override
+    public String toString() {
+        return "OrderInquiryDto{" +
+                "orderId=" + orderId +
+                ", memberId=" + memberId +
+                ", totalQuantity=" + totalQuantity +
+                ", totalPrice=" + totalPrice +
+                ", status=" + status +
+                '}';
+    }
 }

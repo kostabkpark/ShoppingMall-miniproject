@@ -1,6 +1,7 @@
 package org.example.shoppingmall_miniproject.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.shoppingmall_miniproject.dto.order.OrderCreateDto;
 import org.example.shoppingmall_miniproject.dto.order.OrderInquiryDto;
 import org.example.shoppingmall_miniproject.dto.order.OrderProductCreateDto;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderProductRepository orderProductRepository;
@@ -41,14 +43,19 @@ public class OrderService {
         }
 
         Delivery delivery = new Delivery(
-                0L, null, orderDto.getAddress(),
+                null, null, orderDto.getAddress(),
                 DeliveryStatus.prepared,
                 LocalDateTime.now()
         );
 
         Order order = Order.createOrder(member, delivery, orderProducts);
         delivery.setOrder(order);
+
         Order save = orderRepository.save(order);
-        return OrderInquiryDto.of(save);
+        log.info("order : {}", save.getOrderId());
+        OrderInquiryDto orderInquiryDto = OrderInquiryDto.of(save);
+        log.info("orderInquiryDto : {}", orderInquiryDto);
+
+        return orderInquiryDto;
     }
 }
