@@ -60,6 +60,14 @@ class OrderServiceTest {
         OrderCreateDto orderCreateDto = new OrderCreateDto(memberDto.getMemberId(), "test-address");
         OrderProductCreateDto orderProductDto = new OrderProductCreateDto(newProduct.getProductId(),100);
         orderService.createOrder(orderCreateDto, orderProductDto);
+           /* 구글링 결과
+             엔티티 클래스에 @Id를 부여한 필드에 @GeneratedValue를
+            작성하여 AUTO, SEQUENCE, IDENTITY 전략 등 데이터베이스에게
+            key 값을 자동 생성하도록 하는 전략을 선택하였으면서 엔티티 객체 생성 시
+            Id에 해당하는 필드에 직접 값을 입력하면 detach persist 오류 발생함 (cascade된 객체에)
+             나의 경우 Long 인데 delivery 생성시 0L 을 delivery_id 에 넣어서 오류가 나서
+             null 로 변경해서 오류 해결됨. */
+
         // then (잘 만들어졌더라.)
         assertThat(orderRepository.findAll()).hasSize(1);
         assertThat(orderProductRepository.findAll()).hasSize(1);
