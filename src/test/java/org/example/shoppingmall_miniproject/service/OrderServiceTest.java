@@ -1,7 +1,6 @@
 package org.example.shoppingmall_miniproject.service;
 
-import org.assertj.core.api.Assertions;
-import org.example.shoppingmall_miniproject.dto.StockCreateDto;
+import org.example.shoppingmall_miniproject.dto.product.StockCreateDto;
 import org.example.shoppingmall_miniproject.dto.member.MemberCreateDto;
 import org.example.shoppingmall_miniproject.dto.member.MemberInquiryDto;
 import org.example.shoppingmall_miniproject.dto.order.OrderCreateDto;
@@ -15,12 +14,7 @@ import org.example.shoppingmall_miniproject.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -88,7 +82,7 @@ class OrderServiceTest {
     void 전체주문취소테스트(){
         //given - aaa 가 주문한 등록된 order
         MemberInquiryDto aaa = memberService.getOneMember("aaa");
-        OrderInquiryDto orderDto = orderService.getOneOrderByMember(aaa.getUserId());
+        OrderInquiryDto orderDto = orderService.getAllOrdersByMember(aaa.getUserId()).get(0);
         Order order = null;
         OrderProduct orderProduct = null;
         Stock stock = null;

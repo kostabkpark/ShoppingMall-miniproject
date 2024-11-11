@@ -2,7 +2,7 @@ package org.example.shoppingmall_miniproject.service;
 
 import org.example.shoppingmall_miniproject.dto.product.ProductCreateDto;
 import org.example.shoppingmall_miniproject.dto.product.ProductInquiryDto;
-import org.example.shoppingmall_miniproject.dto.StockCreateDto;
+import org.example.shoppingmall_miniproject.dto.product.StockCreateDto;
 import org.example.shoppingmall_miniproject.entity.Warehouse;
 import org.example.shoppingmall_miniproject.exception.NotUniqueStockException;
 import org.example.shoppingmall_miniproject.repository.StockRepository;

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,12 +32,21 @@ public class OrderService {
     private final StockRepository stockRepository;
     private final DeliveryRepository deliveryRepository;
 
-    public OrderInquiryDto getOneOrderByMember(String userId) {
+    public List<OrderInquiryDto> getAllOrdersByMember(String userId) {
         Member member = memberRepository.findByUserId(userId).get();
-        Optional<Order> byMember = orderRepository.findByMember(member);
-        if (byMember.isPresent()) {
-            Order order = byMember.get();
-            return OrderInquiryDto.of(order);
+        List<Order> orders = orderRepository.findAllByMember(member);
+        if (!orders.isEmpty()) {
+            return orders.stream()
+                    .map(order -> OrderInquiryDto.of(order))
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    public OrderInquiryDto getOneOrder(long orderId) {
+        Optional<Order> byId = orderRepository.findById(orderId);
+        if (byId.isPresent()) {
+            return OrderInquiryDto.of(byId.get());
         }
         return null;
     }

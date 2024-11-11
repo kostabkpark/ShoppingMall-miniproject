@@ -17,3 +17,12 @@ public class MemberCreateDto {
     private String phone;
     private String address;
 }
+
+//{
+//        "memberName" : "테스트",
+//        "userId" : "testA",
+//        "password" : "1111",
+//        "email" : "a@naver.com",
+//        "phone" : "0100000000",
+//        "address" : "test address"
+//        }
