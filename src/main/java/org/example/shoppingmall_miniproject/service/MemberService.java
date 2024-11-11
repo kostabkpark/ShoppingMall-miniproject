@@ -21,6 +21,15 @@ import java.util.stream.Collectors;
 public class MemberService {
     private final MemberRepository memberRepository;
 
+    MemberInquiryDto getOneMember(String userId) {
+        Optional<Member> byUserId = memberRepository.findByUserId(userId);
+        if(byUserId.isPresent()) {
+            Member member = byUserId.get();
+            return MemberInquiryDto.of(member);
+        }
+        return null;
+    }
+
     List<MemberInquiryDto> getAllMembers(){
         List<Member> all = memberRepository.findAll();
         return all.stream()

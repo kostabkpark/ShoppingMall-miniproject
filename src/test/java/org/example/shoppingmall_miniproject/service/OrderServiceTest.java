@@ -5,11 +5,11 @@ import org.example.shoppingmall_miniproject.dto.StockCreateDto;
 import org.example.shoppingmall_miniproject.dto.member.MemberCreateDto;
 import org.example.shoppingmall_miniproject.dto.member.MemberInquiryDto;
 import org.example.shoppingmall_miniproject.dto.order.OrderCreateDto;
+import org.example.shoppingmall_miniproject.dto.order.OrderInquiryDto;
 import org.example.shoppingmall_miniproject.dto.order.OrderProductCreateDto;
 import org.example.shoppingmall_miniproject.dto.product.ProductCreateDto;
 import org.example.shoppingmall_miniproject.dto.product.ProductInquiryDto;
-import org.example.shoppingmall_miniproject.entity.Member;
-import org.example.shoppingmall_miniproject.entity.Warehouse;
+import org.example.shoppingmall_miniproject.entity.*;
 import org.example.shoppingmall_miniproject.repository.*;
 
 import org.junit.jupiter.api.Test;
@@ -19,12 +19,15 @@ import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
 @Transactional
-@Commit
+//@Commit
 class OrderServiceTest {
     @Autowired
     private OrderService orderService;
@@ -40,36 +43,67 @@ class OrderServiceTest {
     @Autowired
     private StockService stockService;
 
-        @Test
+    @Autowired
+    private StockRepository stockRepository;
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Test
     void 주문생성테스트(){
         // given (회원, 상품, 재고 가 주어졌을때)
         MemberCreateDto memberCreateDto = new MemberCreateDto(
-                "test1", "aaa", "1111","a","1","a"
+                "testbbb", "bbb", "1111","a","1","a"
         );
         MemberInquiryDto memberDto = memberService.addMember(memberCreateDto);
+        Member member = memberRepository.findByUserId(memberDto.getUserId()).get();
 
         ProductCreateDto productDto = new ProductCreateDto(
-                "test1", 100, 120
+                "testA", 200, 220
         );
-        ProductInquiryDto newProduct = productService.addProduct(productDto);
+        ProductInquiryDto newProduct1 = productService.addProduct(productDto);
+        productDto = new ProductCreateDto(
+                "testB", 300, 330
+        );
+        ProductInquiryDto newProduct2 = productService.addProduct(productDto);
         StockCreateDto stockDto = new StockCreateDto(
-                Warehouse.KR, newProduct.getProductId(),10000
+                Warehouse.KR, newProduct1.getProductId(),2000
+        );
+        stockService.addStock(stockDto);
+        stockDto = new StockCreateDto(
+                Warehouse.KR, newProduct2.getProductId(),3000
         );
         stockService.addStock(stockDto);
         // when (주문을 생성했더니)
         OrderCreateDto orderCreateDto = new OrderCreateDto(memberDto.getMemberId(), "test-address");
-        OrderProductCreateDto orderProductDto = new OrderProductCreateDto(newProduct.getProductId(),100);
-        orderService.createOrder(orderCreateDto, orderProductDto);
-           /* 구글링 결과
-             엔티티 클래스에 @Id를 부여한 필드에 @GeneratedValue를
-            작성하여 AUTO, SEQUENCE, IDENTITY 전략 등 데이터베이스에게
-            key 값을 자동 생성하도록 하는 전략을 선택하였으면서 엔티티 객체 생성 시
-            Id에 해당하는 필드에 직접 값을 입력하면 detach persist 오류 발생함 (cascade된 객체에)
-             나의 경우 Long 인데 delivery 생성시 0L 을 delivery_id 에 넣어서 오류가 나서
-             null 로 변경해서 오류 해결됨. */
-
+        OrderProductCreateDto orderProductDto1 = new OrderProductCreateDto(newProduct1.getProductId(),100);
+            OrderProductCreateDto orderProductDto2 = new OrderProductCreateDto(newProduct2.getProductId(),100);
+        OrderInquiryDto orderDto = orderService.createOrder(orderCreateDto, orderProductDto1, orderProductDto2);
+        Order order = orderRepository.findById(orderDto.getOrderId()).get();
         // then (잘 만들어졌더라.)
-        assertThat(orderRepository.findAll()).hasSize(1);
-        assertThat(orderProductRepository.findAll()).hasSize(1);
+        assertThat(orderRepository.findAllByMember(member)).hasSize(1);
+        assertThat(orderProductRepository.findAllByOrder(order)).hasSize(2);
+    }
+
+    @Test
+    void 전체주문취소테스트(){
+        //given - aaa 가 주문한 등록된 order
+        MemberInquiryDto aaa = memberService.getOneMember("aaa");
+        OrderInquiryDto orderDto = orderService.getOneOrderByMember(aaa.getUserId());
+        Order order = null;
+        OrderProduct orderProduct = null;
+        Stock stock = null;
+        //when
+        if(orderDto != null) {
+            order = orderRepository.findById(orderDto.getOrderId()).get();
+            orderProduct =  order.getOrderProducts().get(0);
+            orderService.cancelOrderProduct(orderProduct.getOrderProductId());
+            stock = stockRepository.findByWarehouseAndProduct(Warehouse.KR, orderProduct.getProduct()).get();
+        }
+        //then
+        assertThat(order).isNotNull();
+        assertThat(order.getOrderStatus()).isEqualTo(OrderStatus.totalCancelled);
+        assertThat(order.getTotalQuantity()).isEqualTo(0L);
+        assertThat(orderProduct).isNotNull();
+        assertThat(stock.getQuantity()).isEqualTo(10000L);
     }
 }
